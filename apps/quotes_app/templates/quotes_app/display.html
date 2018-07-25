@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Quotes</title>
+</head>
+<style>
+    html {
+        width: 1200px;
+        margin: 0px auto;
+    }
+    #box{
+        overflow-y: scroll;
+        border: 2px solid black;
+        display: inline-block;
+        width: 400px;
+        height: 600px;
+    }
+    #box2{
+        overflow-y: scroll;
+        border: 2px solid black;
+        width: 400px;
+        height: 200px;
+    }
+    .littlebox{
+        border: 2px solid black;
+        width: 360px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 20px;
+    }
+    #logout {
+        float: right;
+        font-size: 24px;
+        margin-right: 50px;
+    }
+    textarea {
+        vertical-align: top;
+    }
+    .fave{
+        display: inline-block;
+        margin-left: 20px;
+    }
+    #left{
+        display: inline-block;
+        vertical-align: top;
+        margin-right: 150px;
+    }
+    #right{
+        display: inline-block;
+        vertical-align: top;
+        width: 500px;
+    }
+    #quotes {
+        display: inline-block;
+        margin-top: 100px;
+        vertical-align: top;
+    }
+</style>
+<body>
+    <h1>Welcome {{request.session.name}}</h1>
+    <a id="logout" href="/quotes/clear">Logout</a>
+    <div id="left">
+        <h2>Quotable Quotes</h2>
+        <div id="box">
+            {% for x in no_fave %}
+            <div class="littlebox">
+                {{x.author}}: {{x.message}} <br>
+                <br>
+                Posted by <a href="/quotes/user/{{x.user.id}}">{{x.user.name}}</a> 
+                <form class="fave" action="/quotes/addfave/{{x.id}}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="Add to My Favorites">
+                </form>
+                <br>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div id="right">
+        <h2>Your favorites</h2>
+        <div id="box2">
+            {% for x in fave %}
+            <div class="littlebox">
+                {{x.author}}: {{x.message}} <br>
+                <br>
+                Posted by <a href="/quotes/user/{{x.user.id}}">{{x.user.name}}</a> 
+                <form class="fave" action="/quotes/removefave/{{x.id}}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="Remove From My Favorites">
+                </form>
+                <br>
+            </div>
+            {% endfor %}
+        </div>
+        {% if messages %}
+        <ul>
+            {% for error in messages %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <div id="quotes">
+            <h2>Contribute a Quote</h2>
+            <form action="/quotes/create" method="post">
+            {% csrf_token %}
+            Quoted By: <input type="text" name="author" id=""> <br> <br>
+            Message: <textarea name="message" id="" cols="25" rows="5"></textarea> <br> <br>
+            <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>    
+</body>
+
+</html>

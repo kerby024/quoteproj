@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'logreg_app/styles.css' %}" media="screen" title="no title"  charset="utf-8">
+    <title>Exam</title>
+</head>
+<style>
+    div{
+        overflow-y: scroll;
+        border: 2px solid black;
+        display: inline-block;
+        height: 200px;
+    }
+</style>
+<body>
+    <h1>Welcome {{request.session.name}}</h1>
+</body>
+
+</html>
